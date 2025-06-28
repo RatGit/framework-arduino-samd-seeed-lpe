@@ -1,6 +1,6 @@
 {
-    "name": "framework-arduino-samd-seeed",
+    "name": "framework-arduino-samd-seeed-lpe",
     "description": "Arduino Core for SAMD21 and SAMD51 (Seeed Studio)",
-    "url": "https://github.com/Seeed-Studio/ArduinoCore-samd",
+    "url": "https://github.com/RatGit/ArduinoCore-samd-lpe",
     "version": "1.8.5"
 }
