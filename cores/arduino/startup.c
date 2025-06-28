@@ -423,9 +423,42 @@ void SystemInit( void )
       /* Wait for synchronization */
     }
 
+    /* The DFLL48M clock is specified for 48 MHz, cf product datasheet chapter 37.13.3 - Digital Frequency Locked Loop (DFLL48M) Characteristics. Configuring other frequencies might work, but is not supported. */
+    
+    #if F_CPU >= 32000000L
+      #define F_DFLL F_CPU
+      #define GCLK0_DIV -1
+    #elif F_CPU == 24000000L
+      #define F_DFLL 48000000L
+      #define GCLK0_DIV 0
+    #elif F_CPU == 16000000L
+      #define F_DFLL 32000000L
+      #define GCLK0_DIV 0
+    #elif F_CPU == 12000000L
+      #define F_DFLL 48000000L
+      #define GCLK0_DIV 1
+    #elif F_CPU == 8000000L
+      #define F_DFLL 32000000L
+      #define GCLK0_DIV 1
+    #elif F_CPU == 6000000L
+      #define F_DFLL 48000000L
+      #define GCLK0_DIV 2
+    #elif F_CPU == 4000000L
+      #define F_DFLL 32000000L
+      #define GCLK0_DIV 2
+    #elif F_CPU == 3000000L
+      #define F_DFLL 48000000L
+      #define GCLK0_DIV 3
+    #elif F_CPU == 1500000L
+      #define F_DFLL 48000000L
+      #define GCLK0_DIV 4
+    #else
+      #error supported F_CPU values are 1500000L, 3000000L, 6000000L, 12000000L, 24000000L and 48000000L
+    #endif
+
     SYSCTRL->DFLLMUL.reg = SYSCTRL_DFLLMUL_CSTEP( 31 ) | // Coarse step is 31, half of the max value
                            SYSCTRL_DFLLMUL_FSTEP( 511 ) | // Fine step is 511, half of the max value
-                           SYSCTRL_DFLLMUL_MUL( (VARIANT_MCK + VARIANT_MAINOSC/2) / VARIANT_MAINOSC ) ; // External 32KHz is the reference
+                           SYSCTRL_DFLLMUL_MUL( (F_DFLL + VARIANT_MAINOSC/2) / VARIANT_MAINOSC ) ; // External 32KHz is the reference
 
     while ( (SYSCTRL->PCLKSR.reg & SYSCTRL_PCLKSR_DFLLRDY) == 0 )
     {
@@ -502,9 +535,10 @@ void SystemInit( void )
     }
 
     /* ----------------------------------------------------------------------------------------------
-     * 5) Switch Generic Clock Generator 0 to DFLL48M. CPU will run at 48MHz.
+     * 5) Switch Generic Clock Generator 0 to DFLL48M. CPU will run at F_CPU.
      */
-    GCLK->GENDIV.reg = GCLK_GENDIV_ID( GENERIC_CLOCK_GENERATOR_MAIN ) ; // Generic Clock Generator 0
+    GCLK->GENDIV.reg = GCLK_GENDIV_ID( GENERIC_CLOCK_GENERATOR_MAIN ) | // Generic Clock Generator 0
+                       (GCLK0_DIV >= 0? GCLK_GENDIV_DIV(GCLK0_DIV) : 0);  // Divide by 2^(GCLK0_DIV + 1)
 
     while ( GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY )
     {
@@ -516,7 +550,8 @@ void SystemInit( void )
                         GCLK_GENCTRL_SRC_DFLL48M | // Selected source is DFLL 48MHz
   //                      GCLK_GENCTRL_OE | // Output clock to a pin for tests
                         GCLK_GENCTRL_IDC | // Set 50/50 duty cycle
-                        GCLK_GENCTRL_GENEN ;
+                        GCLK_GENCTRL_GENEN |
+                        (GCLK0_DIV >= 0? GCLK_GENCTRL_DIVSEL : 0);
 
     while ( GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY )
     {
