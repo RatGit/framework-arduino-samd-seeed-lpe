@@ -23,6 +23,7 @@ menu.usbstack=USB Stack
 menu.debug=Debug
 menu.sercom4=SERCOM4
 menu.txrxled=TX/RX LED
+menu.cpu=Processor
 
 # Seeed Wio Terminal (SAMD51)
 # ------------------------------
@@ -169,12 +170,32 @@ seeed_XIAO_m0.menu.sercom4.include=USART
 seeed_XIAO_m0.menu.sercom4.include.sercom4_flag=
 seeed_XIAO_m0.menu.sercom4.exclude=None
 seeed_XIAO_m0.menu.sercom4.exclude.sercom4_flag=-DNO_USART_INTERFACE
-seeed_XIAO_m0.menu.txrxled.on=On
-seeed_XIAO_m0.menu.txrxled.off=Off
-seeed_XIAO_m0.menu.txrxled.on.build.flags.txrxled=-DTXRXLED_ENABLE
 
+seeed_XIAO_m0.menu.cpu.xiao48=XIAO 48 MHz
+seeed_XIAO_m0.menu.cpu.xiao48.build.f_cpu=48000000L
 
-# Seeed Wio Lite MG126 (SAMD21)
+seeed_XIAO_m0.menu.cpu.xiao32=XIAO 32 MHz
+seeed_XIAO_m0.menu.cpu.xiao32.build.f_cpu=32000000L
+
+seeed_XIAO_m0.menu.cpu.xiao24=XIAO 24 MHz
+seeed_XIAO_m0.menu.cpu.xiao24.build.f_cpu=24000000L
+
+seeed_XIAO_m0.menu.cpu.xiao8=XIAO 8 MHz
+seeed_XIAO_m0.menu.cpu.xiao8.build.f_cpu=8000000L
+
+seeed_XIAO_m0.menu.cpu.xiao6=XIAO 6 MHz
+seeed_XIAO_m0.menu.cpu.xiao6.build.f_cpu=6000000L
+
+seeed_XIAO_m0.menu.cpu.xiao4=XIAO 4 MHz
+seeed_XIAO_m0.menu.cpu.xiao4.build.f_cpu=4000000L
+
+seeed_XIAO_m0.menu.cpu.xiao3=XIAO 3 MHz
+seeed_XIAO_m0.menu.cpu.xiao3.build.f_cpu=3000000L
+
+seeed_XIAO_m0.menu.cpu.xiao1=XIAO 1 MHz
+seeed_XIAO_m0.menu.cpu.xiao1.build.f_cpu=1000000L
+
+# Seeed XIAO M0 (SAMD21)
 # ------------------------------
 Wio_Lite_MG126.name=Seeeduino Wio lite MG126
 Wio_Lite_MG126.vid.0=0x2886
