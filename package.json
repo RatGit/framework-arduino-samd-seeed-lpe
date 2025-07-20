@@ -10,6 +10,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/RatGit/framework-arduino-samd-seeed-lpe.git"
+    "url": "https://github.com/RatGit/framework-arduino-samd-seeed-lpe"
   }
 }
